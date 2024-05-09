@@ -30,6 +30,99 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
 
   @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if(MediaQuery.of(context).size.width < 600) {
+        _selectFirstOptionOnInit();
+      }
+    });
+    super.initState();
+  }
+
+  void _selectFirstOptionOnInit() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('O que deseja fazer?'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children:  [
+              ListTile(
+                tileColor: Theme.of(context).primaryColor.withOpacity(0.05),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                leading: const Icon(Icons.person_add),
+                title: const Text('Cadastrar pessoa resgatada'),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  setState(() {
+                    _selectedIndex = 0;
+                  });
+                },
+              ),
+              const SizedBox(height: 10),
+              ListTile(
+                tileColor: Theme.of(context).primaryColor.withOpacity(0.05),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                leading: const Icon(Icons.search_rounded),
+                title: const Text('Procurar pessoa desparecida'),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  setState(() {
+                    _selectedIndex = 1;
+                  });
+                },
+              ),
+              const SizedBox(height: 10),
+              ListTile(
+                tileColor: Theme.of(context).primaryColor.withOpacity(0.05),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                leading: const Icon(Icons.add_circle_rounded),
+                title: const Text('Cadastrar animal resgatado'),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  setState(() {
+                    _selectedIndex = 2;
+                  });
+                },
+              ),
+              const SizedBox(height: 10),
+              ListTile(
+                tileColor: Theme.of(context).primaryColor.withOpacity(0.05),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                leading: const Icon(Icons.search_rounded),
+                title: const Text('Procurar animal perdido'),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  setState(() {
+                    _selectedIndex = 3;
+                  });
+                },
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancelar'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     return Scaffold(

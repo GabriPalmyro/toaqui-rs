@@ -34,6 +34,13 @@
   <meta name="theme-color" content="#ff5757">
   <meta name="msapplication-navbutton-color" content="#ff5757">
 
+  <meta property="og:title" content="ToAquiRS - Encontre pessoas/animais resgatados">
+  <meta property="og:description" content="Encontre desaparecidos nas enchentes que atingiram o Rio Grande do Sul">
+  <meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/achamossuacrianca.appspot.com/o/android-chrome-512x512.png?alt=media&token=c3dd824f-de54-4973-8e00-701aa1ca489a">
+  <meta property="og:url" content="https://toaquirs.com.br/">
+  <meta property="og:site_name" content="ToAquiRS">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:type" content="website">
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.ico" />
@@ -42,7 +49,8 @@
   <link rel="manifest" href="manifest.json">
 
 
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBhXpEnK8GfXi7KRvYu9ISypbTUI5tRo8c&libraries=places"></script>
+  <script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBhXpEnK8GfXi7KRvYu9ISypbTUI5tRo8c&libraries=places"></script>
   <script>
     // The value below is injected by flutter build, do not touch.
     const serviceWorkerVersion = null;
@@ -54,37 +62,37 @@
 <body>
   <div id="loading"></div>
   <script>
-    // window.addEventListener('load', function (ev) {
-    //   // Download main.dart.js
-    //   _flutter.loader.loadEntrypoint({
-    //     serviceWorker: {
-    //       serviceWorkerVersion: serviceWorkerVersion,
-    //     },
-    //     onEntrypointLoaded: function (engineInitializer) {
-    //       engineInitializer.initializeEngine().then(function (appRunner) {
-    //         appRunner.runApp();
-    //       });
-    //     }
-    //   });
-    // });
     window.addEventListener('load', function (ev) {
-      var loading = document.querySelector('#loading');
-      loading.textContent = "Carregando...";
       // Download main.dart.js
       _flutter.loader.loadEntrypoint({
         serviceWorker: {
           serviceWorkerVersion: serviceWorkerVersion,
         },
-        onEntrypointLoaded: async function (engineInitializer) {
-          let appRunner = await engineInitializer.initializeEngine({
-            hostElement: document.querySelector("#flutter_app"),
-            renderer: "html"
-          }).then(function (appRunner) {
+        onEntrypointLoaded: function (engineInitializer) {
+          engineInitializer.initializeEngine().then(function (appRunner) {
             appRunner.runApp();
           });
         }
-      })
+      });
     });
+    // window.addEventListener('load', function (ev) {
+    //   var loading = document.querySelector('#loading');
+    //   loading.textContent = "Carregando...";
+    //   // Download main.dart.js
+    //   _flutter.loader.loadEntrypoint({
+    //     serviceWorker: {
+    //       serviceWorkerVersion: serviceWorkerVersion,
+    //     },
+    //     onEntrypointLoaded: async function (engineInitializer) {
+    //       let appRunner = await engineInitializer.initializeEngine({
+    //         hostElement: document.querySelector("#flutter_app"),
+    //         renderer: "html"
+    //       }).then(function (appRunner) {
+    //         appRunner.runApp();
+    //       });
+    //     }
+    //   })
+    // });
   </script>
 </body>
 

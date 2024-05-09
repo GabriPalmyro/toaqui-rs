@@ -19,8 +19,25 @@ class _AddNewShelterPageState extends State<AddNewShelterPage> {
 
   final TextEditingController _shelterNameController = TextEditingController();
   GeocodingResult? _locationResult;
+  List<String> _shelterNeedsSelected = [];
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  final List<String> _sheltersNeeds = [
+    'Ração',
+    'Medicamentos',
+    'Roupas',
+    'Brinquedos',
+    'Cobertores',
+    'Produtos de limpeza',
+    'Produtos de higiene',
+    'Materiais de construção',
+    'Móveis',
+    'Eletrodomésticos',
+    'Powerbanks',
+    'Dinheiro',
+    'Outros',
+  ];
 
   List<Shelter> _shelters = [];
 
@@ -35,6 +52,7 @@ class _AddNewShelterPageState extends State<AddNewShelterPage> {
       location: locationName,
       latitude: latitude,
       longitude: longitude,
+      needs: _shelterNeedsSelected,
     );
 
     final DocumentReference shelterRef = _firestore.collection('shelters').doc();
@@ -60,6 +78,7 @@ class _AddNewShelterPageState extends State<AddNewShelterPage> {
     _shelterNameController.clear();
     setState(() {
       _locationResult = null;
+      _shelterNeedsSelected.clear();
     });
   }
 
@@ -84,29 +103,64 @@ class _AddNewShelterPageState extends State<AddNewShelterPage> {
               border: OutlineInputBorder(),
             ),
           ),
+          const SizedBox(height: 12),
+          const Text(
+            'Necessidades do Abrigo:',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 8),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: _sheltersNeeds
+                .map(
+                  (need) => FilterChip(
+                    label: Text(need),
+                    selected: _shelterNeedsSelected.contains(need),
+                    onSelected: (selected) {
+                      setState(() {
+                        if (selected) {
+                          _shelterNeedsSelected.add(need);
+                        } else {
+                          _shelterNeedsSelected.remove(need);
+                        }
+                      });
+                    },
+                  ),
+                )
+                .toList(),
+          ),
           const SizedBox(height: 18),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              ElevatedButton(
-                onPressed: () async {
-                  final GeocodingResult? result = await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => SelectLocationPage(
-                        onNext: (result) {
-                          Navigator.pop(context, result);
-                        },
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: () async {
+                    final GeocodingResult? result = await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SelectLocationPage(
+                          onNext: (result) {
+                            Navigator.pop(context, result);
+                          },
+                        ),
                       ),
-                    ),
-                  );
-                  if (result != null) {
-                    setState(() {
-                      _locationResult = result;
-                    });
-                  }
-                },
-                child: const Text('Adicionar Localização'),
+                    );
+                    if (result != null) {
+                      setState(() {
+                        _locationResult = result;
+                      });
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(double.infinity, 40),
+                    maximumSize: const Size(double.infinity, 40),
+                    backgroundColor: Colors.white,
+                    foregroundColor: const Color(0xFFff5757),
+                  ),
+                  child: const Text('Adicionar Localização'),
+                ),
               ),
               if (_locationResult != null) ...[
                 const SizedBox(width: 12),
@@ -157,7 +211,25 @@ class _AddNewShelterPageState extends State<AddNewShelterPage> {
                     (shelter) => Marker(
                       markerId: MarkerId(shelter.name),
                       position: LatLng(shelter.latitude, shelter.longitude),
-                      infoWindow: InfoWindow(title: shelter.name, snippet: shelter.location),
+                      infoWindow: InfoWindow(
+                        title: '${shelter.name} - ${shelter.needs.join(', ')}',
+                        snippet: shelter.location,
+                        onTap: () {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('Necessidades: ${shelter.needs.join(', ')}'),
+                                  const SizedBox(height: 4),
+                                  Text('Localização: ${shelter.location}'),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      ),
                     ),
                   )
                   .toSet(),

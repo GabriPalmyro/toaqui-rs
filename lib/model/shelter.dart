@@ -6,12 +6,14 @@ class Shelter {
   String location;
   double latitude;
   double longitude;
+  List<String> needs; // New property
 
   Shelter({
     required this.name,
     required this.location,
     required this.latitude,
     required this.longitude,
+    this.needs = const [], // Initialize with an empty list
   });
 
   Shelter copyWith({
@@ -19,12 +21,14 @@ class Shelter {
     String? location,
     double? latitude,
     double? longitude,
+    List<String>? needs,
   }) {
     return Shelter(
       name: name ?? this.name,
       location: location ?? this.location,
       latitude: latitude ?? this.latitude,
       longitude: longitude ?? this.longitude,
+      needs: needs ?? this.needs,
     );
   }
 
@@ -34,6 +38,7 @@ class Shelter {
       'location': location,
       'latitude': latitude,
       'longitude': longitude,
+      'needs': needs,
     };
   }
 
@@ -43,6 +48,7 @@ class Shelter {
       location: map['location'] as String,
       latitude: map['latitude'] as double,
       longitude: map['longitude'] as double,
+      needs: List<String>.from(map['needs'] as List<dynamic>),
     );
   }
 
@@ -52,25 +58,18 @@ class Shelter {
 
   @override
   String toString() {
-    return 'Shelter(name: $name, location: $location, latitude: $latitude, longitude: $longitude)';
+    return 'Shelter(name: $name, location: $location, latitude: $latitude, longitude: $longitude, needs: $needs)';
   }
 
   @override
   bool operator ==(covariant Shelter other) {
     if (identical(this, other)) return true;
-  
-    return 
-      other.name == name &&
-      other.location == location &&
-      other.latitude == latitude &&
-      other.longitude == longitude;
+
+    return other.name == name && other.location == location && other.latitude == latitude && other.longitude == longitude;
   }
 
   @override
   int get hashCode {
-    return name.hashCode ^
-      location.hashCode ^
-      latitude.hashCode ^
-      longitude.hashCode;
+    return name.hashCode ^ location.hashCode ^ latitude.hashCode ^ longitude.hashCode ^ needs.hashCode;
   }
 }
