@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <base href="$FLUTTER_BASE_HREF">
+
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="Encontre desaparecidos nas enchentes que atingiram o Rio Grande do Sul">
+  <meta name="theme-color" content="#ff5757">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="ToAqui - Rio Grande do Sul">
+  <meta name="application-name" content="ToAqui - Rio Grande do Sul">
+  <meta name="msapplication-TileColor" content="#ff5757">
+  <meta name="msapplication-TileImage" content="icons/ms-icon-144x144.png">
+
+
+  <!-- iOS meta tags & icons -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="toaqui-rs">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+
+  <!-- Metadados -->
+  <meta name="keywords" content="Flutter, web development, ToAqui, Rio Grande do Sul">
+  <meta name="author" content="Gabriel Palmyro & Tarík">
+  <meta name="robots" content="index, follow">
+  <meta name="revisit-after" content="1 day">
+  <meta name="language" content="Portuguese">
+  <meta name="generator" content="Visual Studio Code">
+  <meta name="rating" content="general">
+  <meta name="distribution" content="global">
+  <meta name="theme-color" content="#ff5757">
+  <meta name="msapplication-navbutton-color" content="#ff5757">
+
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.ico" />
+
+
+  <title>ToAqui - Rio Grande do Sul</title>
+  <link rel="manifest" href="manifest.json">
+
+
+
+  <script>
+    // The value below is injected by flutter build, do not touch.
+    const serviceWorkerVersion = null;
+  </script>
+  <!-- This script adds the flutter initialization JS code -->
+  <script src="flutter.js" defer></script>
+</head>
+
+<body>
+  <script>
+    window.addEventListener('load', function (ev) {
+      // Download main.dart.js
+      _flutter.loader.loadEntrypoint({
+        serviceWorker: {
+          serviceWorkerVersion: serviceWorkerVersion,
+        },
+        onEntrypointLoaded: function (engineInitializer) {
+          engineInitializer.initializeEngine().then(function (appRunner) {
+            appRunner.runApp();
+          });
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>

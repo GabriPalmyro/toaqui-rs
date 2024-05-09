@@ -1,0 +1,39 @@
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "achamossuacrianca",
+          "appId": "1:930015899592:android:41eb32abe1459aa4a69afd",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "achamossuacrianca",
+          "configurations": {
+            "android": "1:930015899592:android:41eb32abe1459aa4a69afd",
+            "ios": "1:930015899592:ios:909b28718a93aa4da69afd",
+            "web": "1:930015899592:web:ec7735f4b8510305a69afd",
+            "windows": "1:930015899592:web:a1ef20d48658242fa69afd"
+          }
+        }
+      }
+    }
+  },
+  "hosting": {
+    "site": "toaqui-rs",
+    "public": "build/web",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}
