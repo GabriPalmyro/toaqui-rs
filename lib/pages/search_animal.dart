@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:encontre_sua_crianca/model/animal.dart';
-import 'package:encontre_sua_crianca/pages/card_animal.dart';
+import 'package:encontre_sua_crianca/widgets/card_animal.dart';
 import 'package:encontre_sua_crianca/widgets/footer_widget.dart';
 import 'package:flutter/material.dart';
 

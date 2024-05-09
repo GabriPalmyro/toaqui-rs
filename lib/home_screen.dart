@@ -1,5 +1,6 @@
 import 'package:encontre_sua_crianca/pages/add_new_animal.dart';
 import 'package:encontre_sua_crianca/pages/add_new_person.dart';
+import 'package:encontre_sua_crianca/pages/add_new_shelter.dart';
 import 'package:encontre_sua_crianca/pages/help_page.dart';
 import 'package:encontre_sua_crianca/pages/lgpd_page.dart';
 import 'package:encontre_sua_crianca/pages/search_animal.dart';
@@ -23,6 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
     SearchPersonPage(),
     AddNewAnimalPage(),
     SearchAnimalPage(),
+    AddNewShelterPage(),
     LGPDPage(),
     HelpPage(),
   ];

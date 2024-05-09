@@ -58,6 +58,15 @@ class _NavigationSideBarState extends State<NavigationSideBar> {
           ),
           padding: EdgeInsets.only(bottom: 12, left: 18, right: 18),
         ),
+         NavigationRailDestination(
+          icon: Icon(Icons.location_on),
+          selectedIcon: Icon(Icons.location_on_outlined),
+          label: Text(
+            'Cadastrar/Encontrar\nAbrigos',
+            textAlign: TextAlign.center,
+          ),
+          padding: EdgeInsets.only(bottom: 12, left: 18, right: 18),
+        ),
         NavigationRailDestination(
           icon: Icon(Icons.star_border),
           selectedIcon: Icon(Icons.star),

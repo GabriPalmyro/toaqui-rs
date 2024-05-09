@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:encontre_sua_crianca/model/person.dart';
-import 'package:encontre_sua_crianca/pages/card_person.dart';
-import 'package:encontre_sua_crianca/widgets/footer_widget.dart';
+import 'package:encontre_sua_crianca/widgets/card_person.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -21,15 +20,10 @@ class _SearchPersonPageState extends State<SearchPersonPage> {
   int numberOfRegisters = 0;
 
   TextEditingController searchController = TextEditingController();
+  ScrollController scolController = ScrollController();
 
   bool isLoading = true;
-
-  void _clearLists() {
-    setState(() {
-      foundPersons.clear();
-      displayedPersons.clear();
-    });
-  }
+  bool isPaginating = true;
 
   void addMorePersons() {
     final dif = numberOfRegisters - displayedPersons.length;
@@ -67,25 +61,19 @@ class _SearchPersonPageState extends State<SearchPersonPage> {
     setState(() {
       isLoading = true;
     });
-    firestore
-        .collection('pessoas')
-        .where(
-          'name',
-          isGreaterThanOrEqualTo: searchText,
-          isLessThanOrEqualTo: '$searchText\uf8ff',
-        )
-        .get()
-        .then((snapshot) {
-      foundPersons.clear();
-      for (var doc in snapshot.docs) {
-        final person = Person.fromMap(doc.data());
-        foundPersons.add(person);
+    displayedPersons.clear();
+    for (var person in foundPersons) {
+      if (person.name.toLowerCase().contains(searchText.toLowerCase()) ||
+          (person.age ?? '').toString().contains(searchText) ||
+          (person.location ?? '').toLowerCase().contains(searchText.toLowerCase()) ||
+          (person.contactPhone ?? '').contains(searchText)) {
+        displayedPersons.add(person);
       }
-      numberOfRegisters = foundPersons.length;
-      addMorePersons();
-      setState(() {
-        isLoading = false;
-      });
+    }
+    numberOfRegisters = displayedPersons.length;
+    addMorePersons();
+    setState(() {
+      isLoading = false;
     });
   }
 
@@ -93,14 +81,17 @@ class _SearchPersonPageState extends State<SearchPersonPage> {
     setState(() {
       page = 1;
       displayedPersons.clear();
+      isPaginating = true;
     });
   }
 
   void _searchPerson(String searchText) {
     _resetPagination();
     if (searchController.text.isNotEmpty) {
+      isPaginating = false;
       _fetchFilteredData(searchController.text);
     } else {
+      isPaginating = true;
       _fetchAllData();
     }
   }
@@ -195,16 +186,12 @@ class _SearchPersonPageState extends State<SearchPersonPage> {
             ),
           ),
           Expanded(
-            child: Scrollbar(
-              interactive: true,
-              trackVisibility: true,
-              child: ListView.builder(
-                itemCount: displayedPersons.length,
-                itemBuilder: (context, index) {
-                  final person = displayedPersons[index];
-                  return (!person.isTest || !kDebugMode) ? CardPerson(person: person) : const SizedBox();
-                },
-              ),
+            child: ListView.builder(
+              itemCount: displayedPersons.length,
+              itemBuilder: (context, index) {
+                final person = displayedPersons[index];
+                return (!person.isTest || !kDebugMode) ? CardPerson(person: person) : const SizedBox();
+              },
             ),
           ),
           if (displayedPersons.length < numberOfRegisters) ...{
@@ -220,8 +207,7 @@ class _SearchPersonPageState extends State<SearchPersonPage> {
             ),
           },
           const SizedBox(height: 12),
-          const FooterWidget(),
-        }
+        },
       ],
     );
   }

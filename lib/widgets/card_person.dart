@@ -20,8 +20,8 @@ class CardPerson extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Nome: ${person.name}'),
-          if (person.age != null) ...{
+          Text('Nome: ${person.name.toUpperCase()}'),
+          if (person.age != null && person.age!.isNotEmpty) ...{
             Text('Idade: ${person.age}'),
           },
           if (person.parentName != null && person.parentName!.isNotEmpty) ...{
@@ -50,7 +50,9 @@ class CardPerson extends StatelessWidget {
                     showDialog(
                       context: context,
                       builder: (context) => AlertDialog(
-                        title: const Text('Foto da Pessoa'),
+                        title: const Text(
+                          'Foto da Pessoa',
+                        ),
                         content: Image.network(
                           person.photoUrl!,
                           errorBuilder: (context, error, stackTrace) {
@@ -64,8 +66,8 @@ class CardPerson extends StatelessWidget {
                     'Abrir Foto',
                     style: TextStyle(
                       color: Color(0xFFff5757),
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 12,
                     ),
                   ),
                 )
@@ -91,8 +93,8 @@ class CardPerson extends StatelessWidget {
                     'Abrir Endereço',
                     style: TextStyle(
                       color: Color(0xFFff5757),
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 12,
                     ),
                   ),
                 )

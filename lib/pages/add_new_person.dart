@@ -193,6 +193,17 @@ class _AddNewPersonPageState extends State<AddNewPersonPage> {
                     ),
                   ),
                 ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 12.0),
+                  child: Text(
+                    'Para ajudar as buscas adicione no mínimo o nome completo da pessoa desaparecida e o telefone de contato.',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.grey[700],
+                    ),
+                  ),
+                ),
                 const SizedBox(height: 12),
                 TextFormField(
                   controller: _nameController,
@@ -258,10 +269,16 @@ class _AddNewPersonPageState extends State<AddNewPersonPage> {
                   controller: _locationController,
                   focusNode: _focusNodes[5],
                   decoration: const InputDecoration(
-                    labelText: 'Local de Abrigo',
+                    labelText: 'Local de Abrigo (Obrigatório)',
                     hintText: 'Informe o local onde a pessoa está',
                     border: OutlineInputBorder(),
                   ),
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return 'Campo obrigatório';
+                    }
+                    return null;
+                  },
                   onEditingComplete: () => _requestFocus(6),
                 ),
                 const SizedBox(height: 18),

@@ -64,6 +64,16 @@ class _CustomDrawerState extends State<CustomDrawer> {
             padding: EdgeInsets.only(bottom: 12, left: 18, right: 18),
           ),
           NavigationRailDestination(
+            icon: Icon(Icons.location_on),
+            selectedIcon: Icon(Icons.location_on_outlined),
+            label: Text(
+              'Cadastrar/Encontrar\nAbrigos',
+              style: TextStyle(fontSize: 16),
+              textAlign: TextAlign.center,
+            ),
+            padding: EdgeInsets.only(bottom: 12, left: 18, right: 18),
+          ),
+          NavigationRailDestination(
             icon: Icon(Icons.star),
             selectedIcon: Icon(Icons.star),
             label: Text(
