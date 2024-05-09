@@ -1,6 +1,8 @@
+import 'package:encontre_sua_crianca/pages/add_new_animal.dart';
 import 'package:encontre_sua_crianca/pages/add_new_person.dart';
 import 'package:encontre_sua_crianca/pages/help_page.dart';
 import 'package:encontre_sua_crianca/pages/lgpd_page.dart';
+import 'package:encontre_sua_crianca/pages/search_animal.dart';
 import 'package:encontre_sua_crianca/pages/search_person.dart';
 import 'package:encontre_sua_crianca/widgets/drawer.dart';
 import 'package:encontre_sua_crianca/widgets/navigation_rail.dart';
@@ -19,6 +21,8 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<Widget> _pages = const [
     AddNewPersonPage(),
     SearchPersonPage(),
+    AddNewAnimalPage(),
+    SearchAnimalPage(),
     LGPDPage(),
     HelpPage(),
   ];

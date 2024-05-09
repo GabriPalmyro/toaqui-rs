@@ -1,33 +1,27 @@
 // ignore_for_file: avoid_web_libraries_in_flutter
 
-import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:encontre_sua_crianca/model/person.dart';
+import 'package:encontre_sua_crianca/model/animal.dart';
 import 'package:encontre_sua_crianca/widgets/footer_widget.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-class AddNewPersonPage extends StatefulWidget {
-  const AddNewPersonPage({super.key});
+class AddNewAnimalPage extends StatefulWidget {
+  const AddNewAnimalPage({super.key});
 
   @override
-  State<AddNewPersonPage> createState() => _AddNewPersonPageState();
+  State<AddNewAnimalPage> createState() => _AddNewAnimalPageState();
 }
 
-class _AddNewPersonPageState extends State<AddNewPersonPage> {
+class _AddNewAnimalPageState extends State<AddNewAnimalPage> {
   final _formKey = GlobalKey<FormState>();
 
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _ageController = TextEditingController();
-  final TextEditingController _parentNameController = TextEditingController();
-  final TextEditingController _cityController = TextEditingController();
+  final TextEditingController _animalNameController = TextEditingController();
   final TextEditingController _contactPhoneController = TextEditingController();
-  final TextEditingController _locationController = TextEditingController();
-  final TextEditingController _observationsController = TextEditingController();
+  final TextEditingController _shelterLocationController = TextEditingController();
+  final TextEditingController _additionalInfoController = TextEditingController();
   final TextEditingController _physicalCharacteristicsController = TextEditingController();
-  final TextEditingController _adressController = TextEditingController();
 
   String? photoUrl;
   XFile? photoFile;
@@ -43,20 +37,16 @@ class _AddNewPersonPageState extends State<AddNewPersonPage> {
   @override
   void initState() {
     super.initState();
-    _focusNodes = List<FocusNode>.generate(9, (index) => FocusNode());
+    _focusNodes = List<FocusNode>.generate(6, (index) => FocusNode());
   }
 
   @override
   void dispose() {
-    _nameController.dispose();
-    _ageController.dispose();
-    _parentNameController.dispose();
-    _cityController.dispose();
+    _animalNameController.dispose();
     _contactPhoneController.dispose();
-    _locationController.dispose();
-    _observationsController.dispose();
+    _shelterLocationController.dispose();
+    _additionalInfoController.dispose();
     _physicalCharacteristicsController.dispose();
-    _adressController.dispose();
     for (var node in _focusNodes) {
       node.dispose();
     }
@@ -67,7 +57,7 @@ class _AddNewPersonPageState extends State<AddNewPersonPage> {
     FocusScope.of(context).requestFocus(_focusNodes[index]);
   }
 
-  void _sendNewPerson() async {
+  void _sendNewAnimal() async {
     setState(() {
       isLoading = true;
     });
@@ -80,31 +70,26 @@ class _AddNewPersonPageState extends State<AddNewPersonPage> {
       });
     }
 
-    Person person = Person(
-      name: _nameController.text,
-      age: _ageController.text,
-      city: _cityController.text,
-      contactPhone: _contactPhoneController.text,
-      location: _locationController.text,
-      adress: _adressController.text,
-      observations: _observationsController.text,
-      parentName: _parentNameController.text,
-      photoUrl: photoUrl,
+    Animal animal = Animal(
+      name: _animalNameController.text,
+      location: _shelterLocationController.text,
+      phone: _contactPhoneController.text,
+      photo: photoUrl,
       createdAt: now,
     );
 
     try {
-      // await firestore.collection('pessoas').add(person.toMap());
-      // _resetFields();
+      await firestore.collection('animals').add(animal.toMap());
+      _resetFields();
       setState(() {
         isLoading = false;
       });
-      _showSnackbar('Pessoa cadastrada com sucesso', true);
+      _showSnackbar('Animal cadastrado com sucesso', true);
     } catch (e) {
       setState(() {
         isLoading = false;
       });
-      _showSnackbar('Erro ao cadastrar pessoa', false);
+      _showSnackbar('Erro ao cadastrar animal', false);
     }
   }
 
@@ -137,27 +122,22 @@ class _AddNewPersonPageState extends State<AddNewPersonPage> {
 
   Future<String?> uploadFile(XFile file) async {
     try {
-      var snapshot = await storage.ref().child('fotos/${_nameController.text}_${DateTime.now().millisecondsSinceEpoch}').putData(
+      var snapshot = await storage.ref().child('dogs/${_animalNameController.text}_${DateTime.now().millisecondsSinceEpoch}').putData(
             await (file.readAsBytes()),
             SettableMetadata(contentType: 'image/jpeg'),
           );
       return await snapshot.ref.getDownloadURL();
     } catch (e) {
-      log('Erro ao fazer upload da imagem: $e');
       return null;
     }
   }
 
   _resetFields() {
-    _nameController.clear();
-    _ageController.clear();
-    _parentNameController.clear();
-    _cityController.clear();
+    _animalNameController.clear();
     _contactPhoneController.clear();
-    _locationController.clear();
-    _observationsController.clear();
+    _shelterLocationController.clear();
+    _additionalInfoController.clear();
     _physicalCharacteristicsController.clear();
-    _adressController.clear();
     photoUrl = null;
     photoFile = null;
   }
@@ -182,120 +162,58 @@ class _AddNewPersonPageState extends State<AddNewPersonPage> {
             key: _formKey,
             child: ListView(
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(right: 12.0),
-                  child: Text(
-                    'Cadastre o máximo de informações possíveis para ajudar a localizar a pessoa desaparecida e clique em "Cadastrar Nova Pessoa".',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.grey[700],
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 12),
                 TextFormField(
-                  controller: _nameController,
+                  controller: _animalNameController,
                   focusNode: _focusNodes[0],
                   decoration: const InputDecoration(
-                    labelText: 'Nome Completo (Obrigatório)',
+                    labelText: 'Nome do Animal',
                     border: OutlineInputBorder(),
                   ),
-                  validator: (value) {
-                    if (value == null || value.trim().isEmpty) {
-                      return 'Campo obrigatório';
-                    }
-                    return null;
-                  },
                   onEditingComplete: () => _requestFocus(1),
                 ),
                 const SizedBox(height: 18),
                 TextFormField(
-                  controller: _ageController,
+                  controller: _contactPhoneController,
                   focusNode: _focusNodes[1],
                   decoration: const InputDecoration(
-                    labelText: 'Idade',
-                    hintText: 'Informe a idade da pessoa desaparecida (ou data de nascimento)',
+                    labelText: 'Telefone do Responsável',
+                    hintText: 'Informe um telefone para contato do responsável pelo animal',
                     border: OutlineInputBorder(),
                   ),
                   onEditingComplete: () => _requestFocus(2),
                 ),
                 const SizedBox(height: 18),
                 TextFormField(
-                  controller: _parentNameController,
+                  controller: _shelterLocationController,
                   focusNode: _focusNodes[2],
                   decoration: const InputDecoration(
-                    labelText: 'Nome Pai/Nome Mãe ou de um responsável',
-                    hintText: 'Informe o nome do pai, mãe ou responsável',
+                    labelText: 'Endereço do Abrigo',
+                    hintText: 'Forneça o endereço do abrigo, se disponível',
                     border: OutlineInputBorder(),
                   ),
                   onEditingComplete: () => _requestFocus(3),
                 ),
                 const SizedBox(height: 18),
                 TextFormField(
-                  controller: _cityController,
+                  controller: _physicalCharacteristicsController,
                   focusNode: _focusNodes[3],
                   decoration: const InputDecoration(
-                    labelText: 'Cidade',
-                    hintText: 'Informe a cidade de onde a pessoa morava',
+                    labelText: 'Características Físicas',
+                    hintText: 'Informe as características físicas do animal',
                     border: OutlineInputBorder(),
                   ),
                   onEditingComplete: () => _requestFocus(4),
                 ),
                 const SizedBox(height: 18),
                 TextFormField(
-                  controller: _contactPhoneController,
+                  controller: _additionalInfoController,
                   focusNode: _focusNodes[4],
                   decoration: const InputDecoration(
-                    labelText: 'Telefone do Responsável',
-                    hintText: 'Informe um telefone para contato do responsável pela pessoa desaparecida',
+                    labelText: 'Informações Adicionais',
+                    hintText: 'Informe outras informações relevantes sobre o animal',
                     border: OutlineInputBorder(),
                   ),
-                  onEditingComplete: () => _requestFocus(5),
-                ),
-                const SizedBox(height: 18),
-                TextFormField(
-                  controller: _locationController,
-                  focusNode: _focusNodes[5],
-                  decoration: const InputDecoration(
-                    labelText: 'Local de Abrigo',
-                    hintText: 'Informe o local onde a pessoa está',
-                    border: OutlineInputBorder(),
-                  ),
-                  onEditingComplete: () => _requestFocus(6),
-                ),
-                const SizedBox(height: 18),
-                TextFormField(
-                  controller: _adressController,
-                  focusNode: _focusNodes[6],
-                  decoration: const InputDecoration(
-                    labelText: 'Endereço do abrigo',
-                    hintText: 'Forneça se tiver, para facilitar a localização',
-                    border: OutlineInputBorder(),
-                  ),
-                  onEditingComplete: () => _requestFocus(7),
-                ),
-                const SizedBox(height: 18),
-                TextFormField(
-                  controller: _physicalCharacteristicsController,
-                  focusNode: _focusNodes[7],
-                  decoration: const InputDecoration(
-                    labelText: 'Características Fisicas',
-                    hintText: 'Informe características físicas da pessoa desaparecida',
-                    border: OutlineInputBorder(),
-                  ),
-                  onEditingComplete: () => _requestFocus(8),
-                ),
-                const SizedBox(height: 18),
-                TextFormField(
-                  controller: _observationsController,
-                  focusNode: _focusNodes[8],
-                  decoration: const InputDecoration(
-                    labelText: 'Observações Adicionais',
-                    hintText: 'Informe outras informações relevantes que possam ajudar na localização da pessoa desaparecida',
-                    border: OutlineInputBorder(),
-                  ),
-                  onEditingComplete: () => _sendNewPerson(),
+                  onEditingComplete: () => _sendNewAnimal(),
                 ),
                 const SizedBox(height: 18),
                 ElevatedButton(
@@ -355,7 +273,11 @@ class _AddNewPersonPageState extends State<AddNewPersonPage> {
                 ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      _sendNewPerson();
+                      if (photoFile != null) {
+                        _sendNewAnimal();
+                      } else {
+                        _showSnackbar('Adicione uma foto do animal para identificação', false);
+                      }
                     } else {
                       _showSnackbar('Preencha todos os campos obrigatórios', false);
                     }
@@ -368,12 +290,13 @@ class _AddNewPersonPageState extends State<AddNewPersonPage> {
                     foregroundColor: Colors.white,
                   ),
                   child: const Text(
-                    'Cadastrar Nova Pessoa',
+                    'Cadastrar Novo Animal',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                 ),
                 const SizedBox(height: 24),
                 const FooterWidget(),
+                const SizedBox(height: 32),
               ],
             ),
           ),

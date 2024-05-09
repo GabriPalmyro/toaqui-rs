@@ -41,6 +41,24 @@ class _NavigationSideBarState extends State<NavigationSideBar> {
           padding: EdgeInsets.only(bottom: 12, left: 18, right: 18),
         ),
         NavigationRailDestination(
+          icon: Icon(Icons.pets_rounded),
+          selectedIcon: Icon(Icons.pets_rounded),
+          label: Text(
+            'Cadastrar Novo Animal\nResgatado',
+            textAlign: TextAlign.center,
+          ),
+          padding: EdgeInsets.only(bottom: 12, left: 18, right: 18),
+        ),
+        NavigationRailDestination(
+          icon: Icon(Icons.find_in_page),
+          selectedIcon: Icon(Icons.find_in_page),
+          label: Text(
+            'Encontrar Animal\nDesaparecido',
+            textAlign: TextAlign.center,
+          ),
+          padding: EdgeInsets.only(bottom: 12, left: 18, right: 18),
+        ),
+        NavigationRailDestination(
           icon: Icon(Icons.star_border),
           selectedIcon: Icon(Icons.star),
           label: Text('LGPD'),
@@ -52,7 +70,6 @@ class _NavigationSideBarState extends State<NavigationSideBar> {
           label: Text('Ajuda'),
           padding: EdgeInsets.only(bottom: 12, left: 18, right: 18),
         ),
-        
       ],
     );
   }

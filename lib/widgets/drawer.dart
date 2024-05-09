@@ -44,6 +44,26 @@ class _CustomDrawerState extends State<CustomDrawer> {
             padding: EdgeInsets.only(bottom: 12, left: 18, right: 18),
           ),
           NavigationRailDestination(
+            icon: Icon(Icons.pets),
+            selectedIcon: Icon(Icons.pets),
+            label: Text(
+              'Cadastrar Novo Animal\nResgatado',
+              style: TextStyle(fontSize: 16),
+              textAlign: TextAlign.center,
+            ),
+            padding: EdgeInsets.only(bottom: 12, left: 18, right: 18),
+          ),
+          NavigationRailDestination(
+            icon: Icon(Icons.find_in_page),
+            selectedIcon: Icon(Icons.find_in_page),
+            label: Text(
+              'Encontrar Animal\nDesaparecido',
+              style: TextStyle(fontSize: 16),
+              textAlign: TextAlign.center,
+            ),
+            padding: EdgeInsets.only(bottom: 12, left: 18, right: 18),
+          ),
+          NavigationRailDestination(
             icon: Icon(Icons.star),
             selectedIcon: Icon(Icons.star),
             label: Text(
