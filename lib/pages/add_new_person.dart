@@ -94,8 +94,8 @@ class _AddNewPersonPageState extends State<AddNewPersonPage> {
     );
 
     try {
-      // await firestore.collection('pessoas').add(person.toMap());
-      // _resetFields();
+      await firestore.collection('pessoas').add(person.toMap());
+      _resetFields();
       setState(() {
         isLoading = false;
       });
