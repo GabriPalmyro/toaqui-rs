@@ -42,7 +42,6 @@ class CardPerson extends StatelessWidget {
           if (person.createdAt != null) ...{
             Text('Adicionado em: ${Format.formatDate(person.createdAt!)}'),
           },
-          const SizedBox(height: 8),
           Row(
             children: [
               if (person.photoUrl != null && person.photoUrl!.isNotEmpty) ...{
@@ -54,7 +53,6 @@ class CardPerson extends StatelessWidget {
                         title: const Text('Foto da Pessoa'),
                         content: Image.network(
                           person.photoUrl!,
-                          scale: 1.0,
                           errorBuilder: (context, error, stackTrace) {
                             return const Text('Erro ao carregar a imagem');
                           },

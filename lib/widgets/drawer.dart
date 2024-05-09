@@ -26,25 +26,39 @@ class _CustomDrawerState extends State<CustomDrawer> {
           NavigationRailDestination(
             icon: Icon(Icons.add_circle_rounded),
             selectedIcon: Icon(Icons.add_circle_outline_rounded),
-            label: Text('Cadastrar Nova Pessoa\nResgatada'),
+            label: Text(
+              'Cadastrar Nova Pessoa\nResgatada',
+              style: TextStyle(fontSize: 16),
+              textAlign: TextAlign.center,
+            ),
             padding: EdgeInsets.only(top: 24, bottom: 12, left: 18, right: 18),
           ),
           NavigationRailDestination(
             icon: Icon(Icons.find_in_page),
             selectedIcon: Icon(Icons.find_in_page_outlined),
-            label: Text('Encontrar Pessoa\nDesaparecida'),
+            label: Text(
+              'Encontrar Pessoa\nDesaparecida',
+              style: TextStyle(fontSize: 16),
+              textAlign: TextAlign.center,
+            ),
             padding: EdgeInsets.only(bottom: 12, left: 18, right: 18),
           ),
           NavigationRailDestination(
             icon: Icon(Icons.star),
             selectedIcon: Icon(Icons.star),
-            label: Text('LGPD'),
+            label: Text(
+              'LGPD',
+              style: TextStyle(fontSize: 16),
+            ),
             padding: EdgeInsets.only(bottom: 12, left: 18, right: 18),
           ),
           NavigationRailDestination(
             icon: Icon(Icons.help),
             selectedIcon: Icon(Icons.help_outline),
-            label: Text('Ajuda'),
+            label: Text(
+              'Ajuda',
+              style: TextStyle(fontSize: 16),
+            ),
             padding: EdgeInsets.only(bottom: 12, left: 18, right: 18),
           ),
         ],

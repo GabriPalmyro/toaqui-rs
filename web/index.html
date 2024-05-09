@@ -53,19 +53,38 @@
 </head>
 
 <body>
+  <div id="loading"></div>
   <script>
+    // window.addEventListener('load', function (ev) {
+    //   // Download main.dart.js
+    //   _flutter.loader.loadEntrypoint({
+    //     serviceWorker: {
+    //       serviceWorkerVersion: serviceWorkerVersion,
+    //     },
+    //     onEntrypointLoaded: function (engineInitializer) {
+    //       engineInitializer.initializeEngine().then(function (appRunner) {
+    //         appRunner.runApp();
+    //       });
+    //     }
+    //   });
+    // });
     window.addEventListener('load', function (ev) {
+      var loading = document.querySelector('#loading');
+      loading.textContent = "Carregando...";
       // Download main.dart.js
       _flutter.loader.loadEntrypoint({
         serviceWorker: {
           serviceWorkerVersion: serviceWorkerVersion,
         },
-        onEntrypointLoaded: function (engineInitializer) {
-          engineInitializer.initializeEngine().then(function (appRunner) {
+        onEntrypointLoaded: async function (engineInitializer) {
+          let appRunner = await engineInitializer.initializeEngine({
+            hostElement: document.querySelector("#flutter_app"),
+            renderer: "html"
+          }).then(function (appRunner) {
             appRunner.runApp();
           });
         }
-      });
+      })
     });
   </script>
 </body>

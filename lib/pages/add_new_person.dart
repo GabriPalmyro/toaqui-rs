@@ -4,6 +4,7 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:encontre_sua_crianca/model/person.dart';
+import 'package:encontre_sua_crianca/widgets/footer_widget.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -361,7 +362,9 @@ class _AddNewPersonPageState extends State<AddNewPersonPage> {
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                 ),
-                const SizedBox(height: 64),
+                const SizedBox(height: 24),
+                const FooterWidget(),
+                const SizedBox(height: 32),
               ],
             ),
           ),

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:encontre_sua_crianca/model/person.dart';
 import 'package:encontre_sua_crianca/pages/card_person.dart';
+import 'package:encontre_sua_crianca/widgets/footer_widget.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -95,6 +96,15 @@ class _SearchPersonPageState extends State<SearchPersonPage> {
     });
   }
 
+  void _searchPerson(String searchText) {
+    _resetPagination();
+    if (searchController.text.isNotEmpty) {
+      _fetchFilteredData(searchController.text);
+    } else {
+      _fetchAllData();
+    }
+  }
+
   @override
   void initState() {
     _fetchAllData();
@@ -112,6 +122,8 @@ class _SearchPersonPageState extends State<SearchPersonPage> {
               Expanded(
                 child: TextField(
                   controller: searchController,
+                  textInputAction: TextInputAction.search,
+                  onSubmitted: _searchPerson,
                   decoration: InputDecoration(
                     labelText: 'Procurar',
                     prefixIcon: const Icon(Icons.search),
@@ -120,12 +132,7 @@ class _SearchPersonPageState extends State<SearchPersonPage> {
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: TextButton(
                         onPressed: () {
-                          _resetPagination();
-                          if (searchController.text.isNotEmpty) {
-                            _fetchFilteredData(searchController.text);
-                          } else {
-                            _fetchAllData();
-                          }
+                          _searchPerson(searchController.text);
                         },
                         child: Text(
                           'Buscar',
@@ -151,6 +158,16 @@ class _SearchPersonPageState extends State<SearchPersonPage> {
                 },
               ),
             ],
+          ),
+        ),
+        const Padding(
+          padding: EdgeInsets.only(left: 12.0),
+          child: Text(
+            'Busque pelo nome e encontre a pessoas que foram salvas e estão em abrigos após as enchentes no RS.',
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w400,
+            ),
           ),
         ),
         if (isLoading) ...{
@@ -202,7 +219,8 @@ class _SearchPersonPageState extends State<SearchPersonPage> {
               child: const Text('Carregar mais'),
             ),
           },
-          const SizedBox(height: 64),
+          const SizedBox(height: 12),
+          const FooterWidget(),
         }
       ],
     );
