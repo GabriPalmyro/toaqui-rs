@@ -25,6 +25,7 @@ class _AddNewAnimalPageState extends State<AddNewAnimalPage> {
 
   String? photoUrl;
   XFile? photoFile;
+  bool isMissing = false;
 
   bool isLoading = false;
 
@@ -75,6 +76,9 @@ class _AddNewAnimalPageState extends State<AddNewAnimalPage> {
       location: _shelterLocationController.text,
       phone: _contactPhoneController.text,
       photo: photoUrl,
+      isMissing: isMissing,
+      additionalInfos: _additionalInfoController.text,
+      physicalInfos: _physicalCharacteristicsController.text,
       createdAt: now,
     );
 
@@ -140,6 +144,7 @@ class _AddNewAnimalPageState extends State<AddNewAnimalPage> {
     _physicalCharacteristicsController.clear();
     photoUrl = null;
     photoFile = null;
+    isMissing = false;
   }
 
   _showSnackbar(String message, bool isSucess) {
@@ -214,6 +219,16 @@ class _AddNewAnimalPageState extends State<AddNewAnimalPage> {
                     border: OutlineInputBorder(),
                   ),
                   onEditingComplete: () => _sendNewAnimal(),
+                ),
+                const SizedBox(height: 18),
+                CheckboxListTile(
+                  title: const Text('Animal Desaparecido?'),
+                  value: isMissing,
+                  onChanged: (value) {
+                    setState(() {
+                      isMissing = value!;
+                    });
+                  },
                 ),
                 const SizedBox(height: 18),
                 ElevatedButton(

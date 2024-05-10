@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:encontre_sua_crianca/model/animal.dart';
 import 'package:encontre_sua_crianca/widgets/card_animal.dart';
-import 'package:encontre_sua_crianca/widgets/footer_widget.dart';
 import 'package:flutter/material.dart';
 
 class SearchAnimalPage extends StatefulWidget {
@@ -61,7 +60,6 @@ class _SearchAnimalPageState extends State<SearchAnimalPage> {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
     return Column(
       children: [
         if (isLoading) ...{
@@ -76,38 +74,41 @@ class _SearchAnimalPageState extends State<SearchAnimalPage> {
               child: Text('Nenhum animal encontrado'),
             ),
           ),
-        } else ...{
+        } else ...[
           const SizedBox(height: 8),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 12.0),
-              child: Text(
-                'Total de registros: $numberOfAnimals',
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.grey[800]),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 12.0),
+                child: Text(
+                  'Total de registros: $numberOfAnimals',
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.grey[800]),
+                ),
               ),
-            ),
+              IconButton(
+                onPressed: () {
+                  _fetchAllAnimalData();
+                },
+                icon: Icon(
+                  Icons.refresh,
+                  color: Theme.of(context).primaryColor,
+                ),
+              ),
+            ],
           ),
           Expanded(
-            child: Scrollbar(
-              interactive: true,
-              trackVisibility: true,
-              child: GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  childAspectRatio:  1.2,
-                  crossAxisCount: width > 1200
-                      ? 3
-                      : width < 1200 && width > 800
-                          ? 2
-                          : 1,
-                  crossAxisSpacing: 8,
-                  mainAxisSpacing: 8,
-                ),
-                itemCount: displayedAnimals.length,
-                itemBuilder: (context, index) {
-                  final animal = displayedAnimals[index];
-                  return CardAnimal(animal: animal);
-                },
+            child: SingleChildScrollView(
+              child: Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: displayedAnimals
+                    .map(
+                      (animal) => CardAnimal(
+                        animal: animal,
+                      ),
+                    )
+                    .toList(),
               ),
             ),
           ),
@@ -123,9 +124,9 @@ class _SearchAnimalPageState extends State<SearchAnimalPage> {
               child: const Text('Carregar mais'),
             ),
           },
-          const SizedBox(height: 12),
-          const FooterWidget(),
-        }
+          // const SizedBox(height: 12),
+          // const FooterWidget(),
+        ],
       ],
     );
   }

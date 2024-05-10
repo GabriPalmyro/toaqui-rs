@@ -11,6 +11,7 @@ class CardAnimal extends StatelessWidget {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     return Container(
+      width: width < 800 ? double.infinity : width * 0.2,
       padding: const EdgeInsets.all(16),
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       decoration: BoxDecoration(
@@ -24,48 +25,58 @@ class CardAnimal extends StatelessWidget {
             Image.network(
               animal.photo!,
               width: double.infinity,
-              height: width < 600 ? 200 : 300,
-              fit: BoxFit.cover,
+              height: width < 800 ? 300 : 400,
+              fit: BoxFit.contain,
             ),
           },
-          if (animal.name != null) ...{
-            Text('Nome: ${animal.name }'),
+          const SizedBox(height: 8),
+          if (animal.name != null && animal.name!.isNotEmpty) ...{
+            Text('Nome: ${animal.name}'),
           },
-          if (animal.phone != null) ...{
-            Text('Contato: ${animal.phone }'),
-          },
-          if (animal.physicalInfos != null) ...{
-            Text('Características Físicas: ${animal.physicalInfos }'),
-          },
-          if (animal.additionalInfos != null) ...{
-            Text('Informações Adicionais: ${animal.additionalInfos}'),
-          },
-          if (animal.location != null && animal.location!.isNotEmpty) ...{
-            const SizedBox(width: 16),
-            TextButton(
-              onPressed: () async {
-                try {
-                  String googleUrl = 'https://www.google.com/maps/search/?api=1&query=${animal.location}';
-                  if (await launchUrl(Uri.parse(googleUrl))) {
-                    await launchUrl(Uri.parse(googleUrl));
-                  }
-                } catch (e) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Não foi possível abrir o endereço'),
-                    ),
-                  );
-                }
-              },
-              child: const Text(
-                'Abrir Endereço',
-                style: TextStyle(
-                  color: Color(0xFFff5757),
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
+          if (animal.phone != null && animal.phone!.isNotEmpty) ...[
+            MouseRegion(
+              cursor: SystemMouseCursors.click,
+              child: GestureDetector(
+                onTap: () async {
+                  final phoneUrl = 'tel:${animal.phone}';
+                  await launchUrl(Uri.parse(phoneUrl));
+                },
+                child: Text(
+                  'Contato: ${animal.phone}',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w800,
+                    decoration: TextDecoration.underline,
+                  ),
                 ),
               ),
-            )
+            ),
+          ],
+          if (animal.location != null && animal.location!.isNotEmpty) ...[
+            MouseRegion(
+              cursor: SystemMouseCursors.click,
+              child: GestureDetector(
+                onTap: () async {
+                  final googleUrl = 'https://www.google.com/maps/search/?api=1&query=${animal.location}';
+                  await launchUrl(Uri.parse(googleUrl));
+                },
+                child: Text(
+                  'Local: ${animal.location}',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w800,
+                    decoration: TextDecoration.underline,
+                  ),
+                ),
+              ),
+            ),
+          ],
+          if (animal.physicalInfos != null && animal.physicalInfos!.isNotEmpty) ...{
+            Text('Características Físicas: ${animal.physicalInfos}'),
+          },
+          if (animal.additionalInfos != null && animal.additionalInfos!.isNotEmpty) ...{
+            Text('Informações Adicionais: ${animal.additionalInfos}'),
+          },
+          if (animal.isMissing) ...{
+            const Text('Animal desaparecido', style: TextStyle(fontWeight: FontWeight.w600)),
           },
         ],
       ),

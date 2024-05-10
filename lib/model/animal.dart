@@ -9,6 +9,7 @@ class Animal {
   final DateTime? createdAt;
   final String? additionalInfos;
   final String? physicalInfos;
+  final bool isMissing; // New property
 
   Animal({
     this.name,
@@ -18,6 +19,7 @@ class Animal {
     this.createdAt,
     this.additionalInfos,
     this.physicalInfos,
+    this.isMissing = false, // Default value for isMissing
   });
 
   Animal copyWith({
@@ -28,6 +30,7 @@ class Animal {
     DateTime? createdAt,
     String? additionalInfos,
     String? physicalInfos,
+    bool? isMissing,
   }) {
     return Animal(
       name: name ?? this.name,
@@ -37,6 +40,7 @@ class Animal {
       createdAt: createdAt ?? this.createdAt,
       additionalInfos: additionalInfos ?? this.additionalInfos,
       physicalInfos: physicalInfos ?? this.physicalInfos,
+      isMissing: isMissing ?? this.isMissing,
     );
   }
 
@@ -49,6 +53,7 @@ class Animal {
       'createdAt': createdAt?.millisecondsSinceEpoch ?? DateTime.now().millisecondsSinceEpoch,
       'additionalInfos': additionalInfos,
       'physicalInfos': physicalInfos,
+      'isMissing': isMissing, // Include isMissing in the map
     };
   }
 
@@ -61,6 +66,7 @@ class Animal {
       createdAt: DateTime.fromMillisecondsSinceEpoch(map['createdAt'] as int),
       additionalInfos: map['additionalInfos'] != null ? map['additionalInfos'] as String : null,
       physicalInfos: map['physicalInfos'] != null ? map['physicalInfos'] as String : null,
+      isMissing: map['isMissing'] as bool? ?? false, // Assign isMissing from the map
     );
   }
 
@@ -70,7 +76,7 @@ class Animal {
 
   @override
   String toString() {
-    return 'Animal(name: $name, phone: $phone, location: $location, photo: $photo, additionalInfos: $additionalInfos, physicalInfos: $physicalInfos)';
+    return 'Animal(name: $name, phone: $phone, location: $location, photo: $photo, additionalInfos: $additionalInfos, physicalInfos: $physicalInfos, isMissing: $isMissing)';
   }
 
   @override
@@ -82,11 +88,18 @@ class Animal {
         other.location == location &&
         other.photo == photo &&
         other.additionalInfos == additionalInfos &&
-        other.physicalInfos == physicalInfos;
+        other.physicalInfos == physicalInfos &&
+        other.isMissing == isMissing;
   }
 
   @override
   int get hashCode {
-    return name.hashCode ^ phone.hashCode ^ location.hashCode ^ photo.hashCode ^ additionalInfos.hashCode ^ physicalInfos.hashCode;
+    return name.hashCode ^
+        phone.hashCode ^
+        location.hashCode ^
+        photo.hashCode ^
+        additionalInfos.hashCode ^
+        physicalInfos.hashCode ^
+        isMissing.hashCode;
   }
 }
